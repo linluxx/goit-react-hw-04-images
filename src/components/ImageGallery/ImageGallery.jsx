@@ -1,79 +1,69 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from 'components/Button/Button';
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 import { Gallery } from './ImageGallery.styled';
 import { Loader } from 'components/Loader/Loader';
-import { getData } from 'components/Api/AxiosConfig';
-// import axios from 'axios';
+import { getData } from 'Api/AxiosConfig';
 import PropTypes from 'prop-types';
 
-// const KEY = '29800147-042a8c86586ab835e1f8a2965';
-// axios.defaults.baseURL = 'https://pixabay.com/api/';
-// const SEARCH_PARAMS =
-//   'image_type=photo&orientation=horizontal&safesearch=true&per_page=12';
+export const ImageGallery = ({ searchQuery }) => {
+  const [data, setData] = useState([]);
+  const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
-export class ImageGallery extends Component {
-  state = {
-    data: [],
-    page: 1,
-    isLoading: false,
-  };
+  useEffect(() => {
+    setData([]);
+    setPage(1);
 
-  componentDidUpdate(prevProps, prevState) {
-    const {
-      props: { searchQuery },
-      state: { page },
-      showLoader,
-      hideLoader,
-    } = this;
-    if (prevProps.searchQuery !== this.props.searchQuery) {
-      this.setState({ page: 1, data: [] });
-      getData(searchQuery, page, showLoader, hideLoader).then(res => {
-        this.setState({ data: res });
-      });
+    if (searchQuery === '') {
+      return;
     }
-    if (prevState.page !== page) {
-      getData(searchQuery, page, showLoader, hideLoader).then(res => {
-        this.setState(({ data }) => ({
-          data: [...data, ...res],
-        }));
-      });
+    console.log('изменения инпута');
+    getData(searchQuery, page, showLoader, hideLoader).then(res => {
+      setData(res);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchQuery]);
+
+  useEffect(() => {
+    if (page === 1) {
+      return;
     }
-  }
+    console.log('изменения страницы');
 
-  onLoadMoreClick = () => {
-    this.setState(prevState => ({
-      page: prevState.page + 1,
-    }));
+    getData(searchQuery, page, showLoader, hideLoader).then(res => {
+      setData(prevState => {
+        console.log(prevState);
+        return [...prevState, ...res];
+      });
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
+
+  const onLoadMoreClick = () => {
+    setPage(prevState => prevState + 1);
   };
 
-  showLoader = () => {
-    this.setState({ isLoading: true });
+  const showLoader = () => {
+    setIsLoading(true);
   };
 
-  hideLoader = () => {
-    this.setState({ isLoading: false });
+  const hideLoader = () => {
+    setIsLoading(false);
   };
 
-  render() {
-    const {
-      onGalleryListClick,
-      onLoadMoreClick,
-      state: { data, isLoading },
-    } = this;
-    return (
-      <>
-        {isLoading && <Loader />}
-        <Gallery onClick={onGalleryListClick}>
-          {data.map(img => {
-            return <ImageGalleryItem data={img} key={img.id} />;
-          })}
-        </Gallery>
-        {data.length > 11 && <Button onLoadMoreClick={onLoadMoreClick} />}
-      </>
-    );
-  }
-}
+  return (
+    <>
+      {isLoading && <Loader />}
+      <Gallery>
+        {data.map(img => {
+          return <ImageGalleryItem data={img} key={img.id} />;
+        })}
+      </Gallery>
+      {data.length > 11 && <Button onLoadMoreClick={onLoadMoreClick} />}
+    </>
+  );
+};
 
 ImageGallery.propTypes = {
   searchQuery: PropTypes.string,

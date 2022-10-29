@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import {
   SearchForm,
   SearchFormButton,
@@ -9,46 +9,45 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { RiSearch2Line } from 'react-icons/ri';
 import PropTypes from 'prop-types';
-export class Searchbar extends Component {
-  state = {
-    searchQuery: '',
-  };
-  onSearchChange = evt => {
-    this.setState({ searchQuery: evt.currentTarget.value.toLowerCase() });
+
+export const Searchbar = ({ onSubmit }) => {
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const onSearchChange = evt => {
+    setSearchQuery(evt.currentTarget.value.toLowerCase());
   };
 
-  onFormSubmit = evt => {
+  const onFormSubmit = evt => {
     evt.preventDefault();
-    if (this.state.searchQuery.trim() === '') {
+    if (searchQuery.trim() === '') {
       return toast.error('Fill the search field!', {
         position: 'top-center',
         autoClose: 3000,
       });
     }
-    this.props.onSubmit(this.state.searchQuery);
-    this.setState({ searchQuery: '' });
+    onSubmit(searchQuery);
+    setSearchQuery('');
   };
-  render() {
-    return (
-      <Header>
-        <SearchForm onSubmit={this.onFormSubmit}>
-          <SearchFormButton type="submit">
-            <RiSearch2Line />
-          </SearchFormButton>
 
-          <SearchFormInput
-            type="text"
-            autoComplete="off"
-            autoFocus
-            placeholder="Search images and photos"
-            value={this.state.searchQuery}
-            onChange={this.onSearchChange}
-          />
-        </SearchForm>
-      </Header>
-    );
-  }
-}
+  return (
+    <Header>
+      <SearchForm onSubmit={onFormSubmit}>
+        <SearchFormButton type="submit">
+          <RiSearch2Line />
+        </SearchFormButton>
+
+        <SearchFormInput
+          type="text"
+          autoComplete="off"
+          autoFocus
+          placeholder="Search images and photos"
+          value={searchQuery}
+          onChange={onSearchChange}
+        />
+      </SearchForm>
+    </Header>
+  );
+};
 
 Searchbar.propTypes = {
   onSubmit: PropTypes.func,
