@@ -7,7 +7,8 @@ export const Gallery = styled.ul`
   grid-gap: 16px;
   margin-top: 0;
   margin-bottom: 0;
-  padding: 0;
+  padding: 16px 0 16px 0;
+
   list-style: none;
   margin-left: auto;
   margin-right: auto;

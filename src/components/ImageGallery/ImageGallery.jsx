@@ -12,13 +12,11 @@ export const ImageGallery = ({ searchQuery }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    setData([]);
-    setPage(1);
-
     if (searchQuery === '') {
       return;
     }
-    console.log('изменения инпута');
+    setPage(1);
+    setData([]);
     getData(searchQuery, page, showLoader, hideLoader).then(res => {
       setData(res);
     });
@@ -29,11 +27,9 @@ export const ImageGallery = ({ searchQuery }) => {
     if (page === 1) {
       return;
     }
-    console.log('изменения страницы');
 
     getData(searchQuery, page, showLoader, hideLoader).then(res => {
       setData(prevState => {
-        console.log(prevState);
         return [...prevState, ...res];
       });
     });
