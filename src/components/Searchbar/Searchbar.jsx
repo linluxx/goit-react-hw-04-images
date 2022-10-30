@@ -1,14 +1,14 @@
 import { useState } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { RiSearch2Line } from 'react-icons/ri';
+import PropTypes from 'prop-types';
 import {
   SearchForm,
   SearchFormButton,
   SearchFormInput,
   Header,
 } from './Searchbar.styled';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { RiSearch2Line } from 'react-icons/ri';
-import PropTypes from 'prop-types';
 
 export const Searchbar = ({ onSubmit }) => {
   const [searchQuery, setSearchQuery] = useState('');

@@ -1,7 +1,7 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Modal } from 'components/Modal/Modal';
 import { GalleryImage, GalleryItem } from './ImageGalleryItem.styled';
-import PropTypes from 'prop-types';
 
 export const ImageGalleryItem = ({ data }) => {
   const [showModal, setShowModal] = useState(false);

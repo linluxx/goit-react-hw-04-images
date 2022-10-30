@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { Button } from 'components/Button/Button';
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
-import { Gallery } from './ImageGallery.styled';
 import { Loader } from 'components/Loader/Loader';
 import { getData } from 'Api/AxiosConfig';
-import PropTypes from 'prop-types';
+import { Gallery } from './ImageGallery.styled';
 
 export const ImageGallery = ({ searchQuery }) => {
   const [data, setData] = useState([]);
@@ -17,7 +17,7 @@ export const ImageGallery = ({ searchQuery }) => {
     }
     setPage(1);
     setData([]);
-    getData(searchQuery, page, showLoader, hideLoader).then(res => {
+    getData(searchQuery, 1, showLoader, hideLoader).then(res => {
       setData(res);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

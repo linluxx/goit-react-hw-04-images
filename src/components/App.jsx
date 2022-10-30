@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Searchbar } from './Searchbar/Searchbar';
 import { ToastContainer } from 'react-toastify';
+import { Searchbar } from './Searchbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { Container } from './App.styled';
 

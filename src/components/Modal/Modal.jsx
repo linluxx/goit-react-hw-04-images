@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { ModalContent, Backdrop } from './Modal.styled';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
+import { ModalContent, Backdrop } from './Modal.styled';
 
 const modalRoot = document.querySelector('#modal-root');
 export const Modal = ({ onClose, children }) => {
